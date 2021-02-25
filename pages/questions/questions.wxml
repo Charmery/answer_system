@@ -1,0 +1,105 @@
+<!--pages/questions/questions.wxml-->
+<view class="bg-white padding " style="height:1500rpx">
+	<!--计时器部分-->
+	<block wx:if="{{oneMoreTimeFlag}}">
+		<view class="flex margin-sm padding justify-center" style="height:15%">
+			<view class="basis-xs"></view>
+			<view wx:if="{{!stopflag}}" class="basis-xl flex align-center justify-center">
+				<text class="text-xsl text-grey text-center">{{time}}</text>
+			</view>
+			<view class="basis-xs"></view>
+		</view>
+		<!--form表单，用于收集答题情况-->
+		<form bindsubmit="formSubmit">
+			<view class="flex margin-sm padding" style="height:40%">
+				<view wx:if="{{!stopflag&&!analyzeflag}}" class="">
+					<view class="">{{index+1}}.{{list[index].question}}</view>
+					<!--多选题-->
+					<checkbox-group wx:if="{{list[index].type=='多'}}" name="checkbox">
+						<label style="display:flex;margin:10px;">
+							<checkbox style="margin-right:5px" value="{{list[index].answers[0]}}" checked="{{state}}" />{{list[index].answers[0]}}</label>
+						<label style="display:flex;margin:10px;">
+							<checkbox style="margin-right:5px" value="{{list[index].answers[1]}}" checked="{{state}}" />{{list[index].answers[1]}}</label>
+						<label style="display:flex;margin:10px;">
+							<checkbox style="margin-right:5px" value="{{list[index].answers[2]}}" checked="{{state}}" />{{list[index].answers[2]}}</label>
+						<label style="display:flex;margin:10px;">
+							<checkbox style="margin-right:5px" value="{{list[index].answers[3]}}" checked="{{state}}" />{{list[index].answers[3]}}</label>
+					</checkbox-group>
+					<block wx:else>
+						<!--单选题-->
+						<radio-group wx:if="{{list[index].type=='单'}}" name="radio">
+							<label style="display:flex;margin:10px;">
+								<radio style="margin-right:5px" value="{{list[index].answers[0]}}" checked="{{state}}" />{{list[index].answers[0]}}</label>
+							<label style="display:flex;margin:10px;">
+								<radio style="margin-right:5px" value="{{list[index].answers[1]}}" checked="{{state}}" />{{list[index].answers[1]}}</label>
+							<label style="display:flex;margin:10px;">
+								<radio style="margin-right:5px" value="{{list[index].answers[2]}}" checked="{{state}}" />{{list[index].answers[2]}}</label>
+							<label style="display:flex;margin:10px;">
+								<radio style="margin-right:5px" value="{{list[index].answers[3]}}" checked="{{state}}" />{{list[index].answers[3]}}</label>
+						</radio-group>
+					</block>
+				</view>
+				<block wx:elif="{{!stopflag&&analyzeflag}}">
+					<block wx:if="{{list[index-1].type=='多'}}">
+						<view class="flex margin-sm padding" style="height:100%;flex-direction:column">
+							<!-- <view><text class="text-lg text-grey text-center">答案:{{}}</text></view> -->
+							<view>
+								<text class="text-lg text-grey text-center">答案:（多选）</text>
+								<block wx:for="{{list[index-1].rightanswers}}" wx:key="rightanswers">
+									<text class="text-lg text-grey text-center">{{item}} </text>
+								</block>
+							</view>
+							<view><text class="text-df text-grey text-center">解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释</text></view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class="flex margin-sm padding" style="height:100%;flex-direction:column">
+							<view><text class="text-lg text-grey text-center">答案（单选）:{{list[index-1].rightanswers}}</text></view>
+							<view><text class="text-df text-grey text-center">解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释解释</text></view>
+						</view>
+					</block>
+				</block>
+				<!--答题结束，展示分数-->
+				<block wx:else>
+					<view class="basis-xs"></view>
+					<view class="basis-xl flex align-center justify-center">
+						<text class="text-xl text-grey text-center">获得分数:{{grade}}</text>
+					</view>
+					<view class="basis-xs"></view>
+				</block>
+			</view>
+			<view class="flex margin-sm padding justify-center" style="height:14%">
+				<!--未结束做题时显示“下一题”按钮-->
+				<button wx:if="{{!stopflag&&!analyzeflag}}" style="margin: 30rpx 0" type="primary" formType="submit">确定</button>
+				<button wx:elif="{{!stopflag&&analyzeflag}}" style="margin: 30rpx 0" bindtap="formAnalyzeToNext">下一题</button>
+				<!-- <button wx:else style="margin: 30rpx 0" bindtap="toRanklist">查看排名</button> -->
+				<!--做题结束，显示“提交成绩”或者“还剩下几次机会”按钮-->
+				<block wx:else>
+					<view class="flex padding justify-between">
+						<!--提交答案按钮-->
+						<button class="basis-sm" style="margin: 30rpx 0;height:80rpx" bindtap="toUpdateGrade">提交成绩</button>
+						<!-- <button wx:else class="basis-sm" style="margin: 30rpx 0;height:80rpx">不可提交</button> -->
+						<!--剩余次数按钮-->
+						<!-- <button wx:if="{{oneMoreTimeFlag}}" class="basis-sm" style="margin: 30rpx 0;height:80rpx" bindtap="toQuestions">还有{{RestAnswerTime}}次机会</button> -->
+						<button class="basis-sm" style="margin: 30rpx 0;height:80rpx" bindtap="toQuestions">还有{{RestAnswerTime}}次机会</button>
+						<!-- <button wx:else class="basis-sm" style="margin: 30rpx 0;height:80rpx">明天再来</button> -->
+					</view>
+				</block>
+			</view>
+		</form>
+	</block>
+	<block wx:else>
+		<!--今日剩余次数用完后的页面-->
+		<view class="flex margin-sm padding justify-center" style="height:80%">
+			<view class="flex align-center justify-center">
+				<view><text class="text-sl text-grey text-center">大哥明天再来吧</text></view>
+				<!-- <view><button class="basis-sm" style="margin: 30rpx 0;height:80rpx" bindtap="updateGrade">提交当前最好成成绩</button></view> -->
+			</view>
+		</view>
+		<!--提交最佳成绩的按钮，防止之前有人没有点击提交按钮，且没有点击剩余0次的按钮和自动提交失效-->
+		<!--使用完全部的答题次数会提交三次数据库update请求，需要在后台进行筛选。如果自行提交，则只提交一次数据库update请求-->
+		<view class="flex margin-sm padding justify-center" style="height:20%">
+			<view><button class="basis-xl" style="margin: 30rpx 0;height:80rpx" bindtap="toUpdateGrade">提交当前最好成绩</button></view>
+		</view>
+	</block>
+</view>

@@ -1,0 +1,25 @@
+<!--index.wxml-->
+<view class="bg-white padding " style="height:1500rpx">
+	<view class="flex margin-sm padding justify-center" style="height:20%">
+	</view>
+	<view class="flex margin-sm padding align-center" style="height:20%">
+    <view class="basis-xs"></view>
+    <view class="basis-xl text-xl text-grey text-center">
+      <text>{{motto}}</text>
+    </view>
+    <view class="basis-xs"></view>
+	</view>
+	<view class="flex margin-sm padding" style="height:20%">
+		<view class="" style="width:1%"></view>
+    <view class="text-df text-grey text-center" style="width:98%">
+      <text>{{chip}}</text>
+    </view>
+    <view class="" style="width:1%"></view>
+	</view>
+	<view class="flex margin-sm padding align-center" style="height:31%">
+		<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击使用微信登录</button>
+			<block wx:else>
+				<button bindtap="bindStart">开始答题吧</button>
+			</block>
+	</view>
+</view>

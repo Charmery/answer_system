@@ -1,0 +1,31 @@
+<!--pages/ranklist/ranklist.wxml-->
+<view class="bg-white padding " style="height:1460rpx">
+	<view class="flex margin-sm padding justify-center" style="height:14%">
+		<view class="basis-xs"></view>
+		<view class="basis-xl flex align-center justify-center">
+			<text class="text-xxl text-grey text-center">天梯排名</text>
+		</view>
+		<view class="basis-xs"></view>
+	</view>
+	<view class="flex margin-sm padding align-center" style="height:60%">
+		<scroll-view class="bg-grey light" style="height:90%" scroll-y="true">
+			<view class="bg-white margin-sm padding" style="display: flex;flex-direction: row;justify-content: center;">
+				<view class=" flex basis-xs padding align-center">
+					<view class="cu-avatar lg radius" style="background-image:url({{userInfo.avatarUrl}})"></view>
+				</view>
+				<view class=" flex basis-lg padding align-center">
+					<text class="text-df text-grey text-center">{{userInfo.nickName}}</text>
+				</view>
+				<view class="flex basis-xs padding align-center">
+					<text class="text-xl text-grey text-center">{{grade}}</text>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
+	<view class="flex margin-sm padding align-center" style="height:14%">
+		<!-- <button bindtap="toQuestions" style="width:40%">再做一遍</button> -->
+		<button style="width:50%">
+			<navigator style="width:100%" open-type="exit" target="miniProgram" hover-class="navigator-hover">退出答题</navigator>
+		</button>
+	</view>
+</view>
